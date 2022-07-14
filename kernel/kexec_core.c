@@ -885,7 +885,16 @@ static struct kexec_load_limit load_limit_panic = {
 
 struct kimage *kexec_image;
 struct kimage *kexec_crash_image;
-static int kexec_load_disabled;
+static int kexec_load_disabled = 1;
+
+static int __init kexec_load_disabled_setup(char *str)
+{
+	unsigned long disabled;
+	if (!kstrtoul(str, 0, &disabled))
+		kexec_load_disabled = disabled ? 1 : 0;
+	return 1;
+}
+__setup("kexec_load_disabled=", kexec_load_disabled_setup);
 
 #ifdef CONFIG_SYSCTL
 static int kexec_limit_handler(const struct ctl_table *table, int write,
