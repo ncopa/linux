@@ -164,29 +164,19 @@ static void vc4_dpi_encoder_enable(struct drm_encoder *encoder)
 				dpi_c |= VC4_SET_FIELD(DPI_ORDER_BGR,
 						       DPI_ORDER);
 				break;
+			case MEDIA_BUS_FMT_BGR666_1X24_CPADHI:
+				dpi_c |= VC4_SET_FIELD(DPI_ORDER_BGR, DPI_ORDER);
+				fallthrough;
 			case MEDIA_BUS_FMT_RGB666_1X24_CPADHI:
 				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_18BIT_666_RGB_2,
 						       DPI_FORMAT);
 				break;
-			case MEDIA_BUS_FMT_BGR666_1X24_CPADHI:
-				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_18BIT_666_RGB_2,
-						       DPI_FORMAT);
-				dpi_c |= VC4_SET_FIELD(DPI_ORDER_BGR,
-						       DPI_ORDER);
-				break;
-			default:
-				DRM_ERROR("Unknown media bus format %d\n",
-					  bus_format);
+			case MEDIA_BUS_FMT_BGR666_1X18:
+				dpi_c |= VC4_SET_FIELD(DPI_ORDER_BGR, DPI_ORDER);
 				fallthrough;
 			case MEDIA_BUS_FMT_RGB666_1X18:
 				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_18BIT_666_RGB_1,
 						       DPI_FORMAT);
-				break;
-			case MEDIA_BUS_FMT_BGR666_1X18:
-				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_18BIT_666_RGB_1,
-						       DPI_FORMAT);
-				dpi_c |= VC4_SET_FIELD(DPI_ORDER_BGR,
-						       DPI_ORDER);
 				break;
 			case MEDIA_BUS_FMT_RGB565_1X16:
 				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_16BIT_565_RGB_1,
@@ -196,16 +186,14 @@ static void vc4_dpi_encoder_enable(struct drm_encoder *encoder)
 				dpi_c |= VC4_SET_FIELD(DPI_FORMAT_16BIT_565_RGB_2,
 						       DPI_FORMAT);
 				break;
+			default:
+				DRM_ERROR("Unknown media bus format %d\n",
+					  bus_format);
+				break;
 			}
-		} else {
-			/* Default to 18bit if no connector found. */
-			dpi_c |= VC4_SET_FIELD(DPI_FORMAT_18BIT_666_RGB_1,
-					       DPI_FORMAT);
-
 		}
 
-		if (connector->display_info.bus_flags &
-					DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
+		if (connector->display_info.bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
 			dpi_c |= DPI_PIXEL_CLK_INVERT;
 
 		if (connector->display_info.bus_flags & DRM_BUS_FLAG_DE_LOW)
