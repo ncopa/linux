@@ -42,7 +42,7 @@ OBJTOOL_CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
 # Always want host compilation.
 HOST_OVERRIDES := CC="$(HOSTCC)" LD="$(HOSTLD)" AR="$(HOSTAR)"
 
-AWK = awk
+AWK ?= awk
 MKDIR = mkdir
 
 ifeq ($(V),1)
