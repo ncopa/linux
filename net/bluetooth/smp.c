@@ -885,9 +885,16 @@ static int tk_request(struct l2cap_conn *conn, u8 remote_oob, u8 auth,
 	    hcon->io_capability == HCI_IO_NO_INPUT_OUTPUT)
 		smp->method = JUST_WORKS;
 
-	/* If Just Works, Continue with Zero TK */
+	/* If Just Works, Continue with Zero TK and ask user-space for
+	 * confirmation */
 	if (smp->method == JUST_WORKS) {
-		set_bit(SMP_FLAG_TK_VALID, &smp->flags);
+		ret = mgmt_user_confirm_request(hcon->hdev, &hcon->dst,
+						hcon->type,
+						hcon->dst_type,
+						passkey, 1);
+		if (ret)
+			return ret;
+		set_bit(SMP_FLAG_WAIT_USER, &smp->flags);
 		return 0;
 	}
 
