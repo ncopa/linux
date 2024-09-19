@@ -832,6 +832,8 @@ static void es8326_jack_detect_handler(struct work_struct *work)
 			#ifdef SPACEMIT_CONFIG_CODEC_ES8326
 			es8326_enable_spk(es8326, true);
 			#endif
+			snd_soc_jack_report(es8326->jack, 0,
+				    SND_JACK_BTN_0 | SND_JACK_BTN_1 | SND_JACK_BTN_2);
 			snd_soc_jack_report(es8326->jack, 0, SND_JACK_HEADSET);
 			/* mute adc when mic path switch */
 			#ifdef SPACEMIT_CONFIG_CODEC_ES8326
