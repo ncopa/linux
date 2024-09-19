@@ -656,7 +656,7 @@ endif
 
 ########### PLATFORM OPS  ##########################
 # Import platform assigned KSRC and CROSS_COMPILE
-include $(wildcard $(DRV_PATH)/platform/*.mk)
+include $(wildcard $(srctree)/$(DRV_PATH)/platform/*.mk)
 
 # Import platform specific compile options
 EXTRA_CFLAGS += -I$(src)/platform
