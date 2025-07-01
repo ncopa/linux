@@ -853,7 +853,7 @@
 &pcie1_rc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie1_3>;
-	x1,pwr_on = <&gpio 116 0>;
+	k1x,pwr_on = <&gpio 116 0>;
 	status = "okay";
 };
 
