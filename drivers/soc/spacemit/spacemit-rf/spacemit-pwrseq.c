@@ -21,6 +21,7 @@
 #include <linux/clk.h>
 #include <linux/of_platform.h>
 #include <linux/regulator/consumer.h>
+#include <linux/gpio/consumer.h>
 #include <linux/platform_device.h>
 #include "spacemit-pwrseq.h"
 

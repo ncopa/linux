@@ -761,7 +761,6 @@ static int v2d_probe(struct platform_device *pdev)
 	struct resource *res;
 	void __iomem *base;
 	int i, rval = 0;
-	struct sched_param param;
 	int ret;
 
 	info = devm_kzalloc(dev, sizeof(struct v2d_info), GFP_KERNEL);
@@ -855,8 +854,7 @@ static int v2d_probe(struct platform_device *pdev)
 		V2DLOGE("%s: failed to run config posting thread: %d\n", __func__, rval);
 		goto err;
 	}
-	param.sched_priority = 1;
-	sched_setscheduler(info->post_thread, SCHED_FIFO, &param);
+	sched_set_fifo_low(info->post_thread);
 	kthread_init_work(&info->post_work, v2d_post_work_func);
 #ifdef CONFIG_SPACEMIT_DEBUG
 	info->is_v2d_running = check_v2d_running_status;
