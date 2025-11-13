@@ -129,6 +129,9 @@ bool kvm_riscv_gstage_try_update_pte(struct kvm_gstage *gstage, u32 level,
 				     gpa_t addr, pte_t *ptep,
 				     pte_t old_pte, pte_t new_pte)
 {
+	/* The atomic operation compares and stores hardware-format entries. */
+	ALT_FIXUP_MT(old_pte);
+	ALT_FIXUP_MT(new_pte);
 	if (cmpxchg(&ptep->pte, pte_val(old_pte), pte_val(new_pte)) !=
 	    pte_val(old_pte))
 		return false;
