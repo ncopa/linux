@@ -116,6 +116,12 @@
 	clock-output-names = "osc_24m";
 };
 
+&pcie {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie_pins>;
+	status = "okay";
+};
+
 &pinctrl {
 	vrgmii-supply = <&vcc_1v8>;
 };
