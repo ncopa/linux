@@ -275,6 +275,25 @@
 				#clock-cells = <1>;
 				#reset-cells = <1>;
 			};
+
+			emmc: mmc@50450000 {
+				compatible = "eswin,eic7700-dwcmshc";
+				reg = <0x0 0x50450000 0x0 0x10000>;
+				interrupts = <79>;
+				clocks = <&clk EIC7700_CLK_GATE_HSP_MSHC0_CORE_CLK>,
+					 <&hspcrg EIC7700_HSP_CLK_GATE_EMMC>,
+					 <&clk EIC7700_CLK_GATE_HSP_ACLK>,
+					 <&hspcrg EIC7700_HSP_CLK_GATE_MSHC0_TMR>;
+				clock-names = "core", "bus", "axi", "timer";
+				resets = <&reset EIC7700_RESET_HSP_EMMC_ARST>,
+					 <&reset EIC7700_RESET_MSHC0_PHY>,
+					 <&reset EIC7700_RESET_HSP_EMMC_PRST>,
+					 <&reset EIC7700_RESET_MSHC0_TXRX>;
+				reset-names = "axi", "phy", "prstn", "txrx";
+				eswin,hsp-sp-csr = <&hspcrg 0x508 0x50c>;
+				eswin,drive-impedance-ohms = <50>;
+				status = "disabled";
+			};
 		};
 
 		wdt0: watchdog@50800000 {
