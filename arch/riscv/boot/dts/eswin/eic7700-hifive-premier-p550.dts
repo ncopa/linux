@@ -148,9 +148,29 @@
 	};
 };
 
+&gpio {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio43_pins>;
+};
+
+&gpio43_pins {
+	bias-disable;
+	input-disable;
+};
+
 &gpio84_pins {
 	bias-disable;
 	input-disable;
+};
+
+&gpioB {
+	usb-hub-reset-hog {
+		gpio-hog;
+		gpios = <11 GPIO_ACTIVE_LOW>;
+		/* Deassert the active-low reset of the on-board USB hub. */
+		output-low;
+		line-name = "usb-hub-reset";
+	};
 };
 
 &osc {
@@ -178,4 +198,14 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart2_pins>;
+};
+
+&usb0 {
+	dr_mode = "peripheral";
+	status = "okay";
+};
+
+&usb1 {
+	dr_mode = "host";
+	status = "okay";
 };

@@ -360,6 +360,44 @@
 				eswin,drive-impedance-ohms = <50>;
 				status = "disabled";
 			};
+
+			usb0: usb@50480000 {
+				compatible = "eswin,eic7700-dwc3";
+				reg = <0x0 0x50480000 0x0 0x10000>;
+				interrupts = <85>;
+				interrupt-names = "peripheral";
+				clocks = <&clk EIC7700_CLK_GATE_HSP_ACLK>,
+					 <&clk EIC7700_CLK_GATE_HSP_CFG_CLK>,
+					 <&hspcrg EIC7700_HSP_CLK_GATE_USB0>;
+				clock-names = "aclk", "cfg", "usb_en";
+				resets = <&reset EIC7700_RESET_USB0_VAUX>,
+					 <&hspcrg EIC7700_HSP_RST_USB0>,
+					 <&hspcrg EIC7700_HSP_RST_USB0_PHY>;
+				reset-names = "vaux", "usb_rst", "usb_phy";
+				eswin,hsp-sp-csr = <&hspcrg 0x800 0x818>;
+				phy_type = "utmi";
+				maximum-speed = "high-speed";
+				status = "disabled";
+			};
+
+			usb1: usb@50490000 {
+				compatible = "eswin,eic7700-dwc3";
+				reg = <0x0 0x50490000 0x0 0x10000>;
+				interrupts = <86>;
+				interrupt-names = "peripheral";
+				clocks = <&clk EIC7700_CLK_GATE_HSP_ACLK>,
+					 <&clk EIC7700_CLK_GATE_HSP_CFG_CLK>,
+					 <&hspcrg EIC7700_HSP_CLK_GATE_USB1>;
+				clock-names = "aclk", "cfg", "usb_en";
+				resets = <&reset EIC7700_RESET_USB1_VAUX>,
+					 <&hspcrg EIC7700_HSP_RST_USB1>,
+					 <&hspcrg EIC7700_HSP_RST_USB1_PHY>;
+				reset-names = "vaux", "usb_rst", "usb_phy";
+				eswin,hsp-sp-csr = <&hspcrg 0x900 0x918>;
+				phy_type = "utmi";
+				maximum-speed = "high-speed";
+				status = "disabled";
+			};
 		};
 
 		wdt0: watchdog@50800000 {
@@ -598,7 +636,7 @@
 			status = "disabled";
 		};
 
-		gpio@51600000 {
+		gpio: gpio@51600000 {
 			compatible = "snps,dw-apb-gpio";
 			reg = <0x0 0x51600000 0x0 0x80>;
 			#address-cells = <1>;
