@@ -168,23 +168,45 @@ allOf:
             - const: bus
             - const: timer
     else:
-      properties:
-        clocks:
-          minItems: 1
-          items:
-            - description: core clock
-            - description: bus clock for optional
-            - description: axi clock for rockchip specified
-            - description: block clock for rockchip specified
-            - description: timer clock for rockchip specified
-        clock-names:
-          minItems: 1
-          items:
-            - const: core
-            - const: bus
-            - const: axi
-            - const: block
-            - const: timer
+      if:
+        properties:
+          compatible:
+            contains:
+              const: eswin,eic7700-dwcmshc
+      then:
+        properties:
+          clocks:
+            minItems: 1
+            items:
+              - description: core clock
+              - description: bus clock
+              - description: AXI clock
+              - description: timer clock
+          clock-names:
+            minItems: 1
+            items:
+              - const: core
+              - const: bus
+              - const: axi
+              - const: timer
+      else:
+        properties:
+          clocks:
+            minItems: 1
+            items:
+              - description: core clock
+              - description: bus clock for optional
+              - description: axi clock for rockchip specified
+              - description: block clock for rockchip specified
+              - description: timer clock for rockchip specified
+          clock-names:
+            minItems: 1
+            items:
+              - const: core
+              - const: bus
+              - const: axi
+              - const: block
+              - const: timer
 
   - if:
       properties:
