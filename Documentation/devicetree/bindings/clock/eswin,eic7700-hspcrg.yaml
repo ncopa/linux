@@ -14,7 +14,11 @@ description:
 
 properties:
   compatible:
-    const: eswin,eic7700-hspcrg
+    oneOf:
+      - const: eswin,eic7700-hspcrg
+      - items:
+          - const: eswin,eic7700-hspcrg
+          - const: syscon
 
   reg:
     maxItems: 1

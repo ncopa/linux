@@ -10,6 +10,8 @@
 
 #include <linux/auxiliary_bus.h>
 #include <linux/clk-provider.h>
+#include <linux/mfd/syscon.h>
+#include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
@@ -264,8 +266,20 @@ static int eic7700_hsp_clk_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(data),
 				     "failed to get clk data!\n");
 
-	regmap = devm_regmap_init_mmio(dev, data->base,
-				       &eic7700_hsp_regmap_config);
+	if (of_device_is_compatible(dev->of_node, "syscon")) {
+		regmap = syscon_node_to_regmap(dev->of_node);
+		if (IS_ERR(regmap))
+			return dev_err_probe(dev, PTR_ERR(regmap),
+					     "failed to get HSP syscon regmap\n");
+
+		/* Make the same map available to the auxiliary reset driver. */
+		ret = regmap_attach_dev(dev, regmap, &eic7700_hsp_regmap_config);
+		if (ret)
+			return dev_err_probe(dev, ret, "failed to attach HSP regmap\n");
+	} else {
+		regmap = devm_regmap_init_mmio(dev, data->base,
+					       &eic7700_hsp_regmap_config);
+	}
 	if (IS_ERR(regmap))
 		return dev_err_probe(dev, PTR_ERR(regmap),
 				     "failed to get regmap!\n");
