@@ -1764,7 +1764,7 @@ static int eic7700_init(struct device *dev, struct sdhci_host *host, struct dwcm
 	u32 emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
 	u32 sd_caps = MMC_CAP2_NO_MMC | MMC_CAP2_NO_SDIO;
 	unsigned int val, hsp_int_status, hsp_pwr_ctrl;
-	static const char * const clk_ids[] = {"axi"};
+	static const char * const clk_ids[] = {"axi", "timer"};
 	struct of_phandle_args args;
 	struct eic7700_priv *priv;
 	struct regmap *hsp_regmap;
